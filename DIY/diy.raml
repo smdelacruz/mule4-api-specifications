@@ -1,0 +1,55 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/d5418afb-8717-451c-bd2c-6123b7d099aa/ # 
+title: diy
+
+types:
+  Accounts: !include diy-data-type.raml
+  Accounts-post: !include diy-data-type-post.raml
+
+
+/accounts:
+    get:
+        description: This is the get method for the DIY API from training
+        headers:
+            Requester-ID:
+                required: true
+        queryParameters:
+            type:
+                required: true
+                enum:
+                  - personal
+                  - business
+            name:
+              description: return all account records for a particular account owner
+              required: false
+            country:
+              description: return records matching the account owner's country of residence
+              required: false
+        responses:
+          200:
+            body:
+              application/json:
+                type: Accounts[]
+          400:
+            body:
+              application/json:
+                example:
+                  message: Oops! Request not found oh!
+    post:
+      description: This is the get method for the DIY API from training
+      body:
+        application/json:
+          type: Accounts-post
+          examples:
+            input: !include diy-example.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Account created (but not really)
+        400:
+          body:
+            application/json:
+              example:
+                message: Oops! Request not found oh!
